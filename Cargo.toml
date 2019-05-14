@@ -1,6 +1,6 @@
 [package]
 name = "envsubst"
-version = "0.0.1-dev.0"
+version = "0.0.1"
 description = "Variables substitution"
 license = "MIT/Apache-2.0"
 keywords = ["envsubst", "varsubst"]
