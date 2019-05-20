@@ -29,6 +29,20 @@ where
     Ok(output)
 }
 
+/// Check whether input string contains templated variables.
+pub fn is_templated<S>(input: S) -> bool
+where
+    S: AsRef<str>,
+{
+    let start = input.as_ref().find("${");
+    let end = input.as_ref().find('}');
+
+    match (start, end) {
+        (Some(s), Some(e)) => s < e,
+        _ => false,
+    }
+}
+
 /// Validate variables for substitution.
 ///
 /// This check whether substitution variables are valid. In order to make
@@ -64,7 +78,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use super::substitute;
+    use super::*;
     use std::collections::HashMap;
 
     #[test]
@@ -76,6 +90,21 @@ mod tests {
         let out = substitute(template, &env).unwrap();
         let expected = "foo var bar";
         assert_eq!(out, expected);
+    }
+
+    #[test]
+    fn template_check() {
+        let plain = "foo";
+        assert!(!is_templated(plain));
+
+        let template = "foo ${VAR} bar";
+        assert!(is_templated(template));
+
+        let starting = "foo${";
+        assert!(!is_templated(starting));
+
+        let ending = "foo}";
+        assert!(!is_templated(ending));
     }
 
     #[test]
