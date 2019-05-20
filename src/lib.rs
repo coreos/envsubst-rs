@@ -29,6 +29,19 @@ where
     Ok(output)
 }
 
+/// Validate variables for substitution.
+///
+/// This check whether substitution variables are valid. In order to make
+/// substitution deterministic, the following characters are not allowed
+/// within variables names nor values: `$`, `{`, `}`.
+pub fn validate_vars(variables: &HashMap<String, String>) -> Fallible<()> {
+    for (k, v) in variables {
+        validate(k, "key")?;
+        validate(v, "value")?;
+    }
+    Ok(())
+}
+
 /// Check whether `value` contains invalid characters.
 fn validate<S>(value: S, kind: &str) -> Fallible<()>
 where
