@@ -1,6 +1,6 @@
 [package]
 name = "envsubst"
-version = "0.0.2-alpha.0"
+version = "0.1.1-alpha.0"
 description = "Variables substitution"
 license = "MIT/Apache-2.0"
 keywords = ["envsubst", "varsubst"]
@@ -21,5 +21,5 @@ upload-doc = false
 disable-publish = true
 disable-push = true
 pre-release-commit-message = "cargo: envsubst release {{version}}"
-pro-release-commit-message = "cargo: version bump to {{version}}"
+pro-release-commit-message = "cargo: development version bump"
 tag-message = "envsubst {{version}}"
