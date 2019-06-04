@@ -6,6 +6,16 @@
 
 A simple Rust library for variables substitution.
 
+This library provide helper functions for string manipulation,
+taking values from a context **env**ironment map and **subst**ituting
+all matching placeholders.
+
+Its name and logic is similar to the [`envsubst`] GNU utility, but
+this only supports braces-delimited variables (i.e. `${foo}`) and
+takes replacement values from an explicit map of variables.
+
+[`envsubst`]: https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
+
 ## License
 
 Licensed under either of

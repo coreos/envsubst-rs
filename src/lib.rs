@@ -1,4 +1,31 @@
-//! Variable substitution.
+//! Variables substitution in string templates.
+//!
+//! This library provide helper functions for string manipulation,
+//! taking values from a context **env**ironment map and **subst**ituting
+//! all matching placeholders.
+//!
+//! Its name and logic is similar to the [`envsubst`] GNU utility, but
+//! this only supports braces-delimited variables (i.e. `${foo}`) and
+//! takes replacement values from an explicit map of variables.
+//!
+//! [`envsubst`]: https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
+//!
+//! ## Example
+//!
+//! ```rust
+//! let base_url = "${protocol}://${hostname}/${endpoint}";
+//! assert!(envsubst::is_templated(base_url));
+//!
+//! let mut context = std::collections::HashMap::new();
+//! context.insert("protocol".to_string(), "https".to_string());
+//! context.insert("hostname".to_string(), "example.com".to_string());
+//! context.insert("endpoint".to_string(), "login".to_string());
+//! assert!(envsubst::validate_vars(&context).is_ok());
+//!
+//! let final_url = envsubst::substitute(base_url, &context).unwrap();
+//! assert!(!envsubst::is_templated(&final_url));
+//! assert_eq!(final_url, "https://example.com/login");
+//! ```
 
 #![allow(clippy::implicit_hasher)]
 
