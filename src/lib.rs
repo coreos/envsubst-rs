@@ -29,14 +29,18 @@
 
 #![allow(clippy::implicit_hasher)]
 
-use failure::{ensure, Fallible};
 use std::collections::HashMap;
+
+/// Library errors.
+#[derive(thiserror::Error, Debug)]
+#[error("envsubst error: {0}")]
+pub struct Error(String);
 
 /// Substitute variables in a template string.
 ///
 /// Given an input string `template`, replace tokens of the form `${foo}` with
 /// values provided in `variables`.
-pub fn substitute<T>(template: T, variables: &HashMap<String, String>) -> Fallible<String>
+pub fn substitute<T>(template: T, variables: &HashMap<String, String>) -> Result<String, Error>
 where
     T: Into<String>,
 {
@@ -75,7 +79,7 @@ where
 /// This check whether substitution variables are valid. In order to make
 /// substitution deterministic, the following characters are not allowed
 /// within variables names nor values: `$`, `{`, `}`.
-pub fn validate_vars(variables: &HashMap<String, String>) -> Fallible<()> {
+pub fn validate_vars(variables: &HashMap<String, String>) -> Result<(), Error> {
     for (k, v) in variables {
         validate(k, "key")?;
         validate(v, "value")?;
@@ -84,21 +88,21 @@ pub fn validate_vars(variables: &HashMap<String, String>) -> Fallible<()> {
 }
 
 /// Check whether `value` contains invalid characters.
-fn validate<S>(value: S, kind: &str) -> Fallible<()>
+fn validate<S>(value: S, kind: &str) -> Result<(), Error>
 where
     S: AsRef<str>,
 {
     let forbidden = &["$", "{", "}"];
     for c in forbidden {
-        ensure!(
-            !value.as_ref().contains(c),
-            format!(
+        if value.as_ref().contains(c) {
+            let err_msg = format!(
                 "variable {} '{}' contains forbidden character '{}'",
                 kind,
                 value.as_ref(),
                 c
-            )
-        );
+            );
+            return Err(Error(err_msg));
+        };
     }
     Ok(())
 }
