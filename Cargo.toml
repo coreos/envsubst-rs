@@ -4,8 +4,8 @@ version = "0.2.1-alpha.0"
 description = "Variables substitution"
 license = "MIT/Apache-2.0"
 keywords = ["envsubst", "varsubst"]
-authors = ["Luca Bruno <lucab@debian.org>"]
-repository = "https://github.com/lucab/envsubst-rs"
+authors = ["Luca Bruno <lucab@lucabruno.net>"]
+repository = "https://github.com/coreos/envsubst-rs"
 edition = "2018"
 exclude = [
 ".gitignore",

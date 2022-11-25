@@ -1,6 +1,5 @@
 # envsubst
 
-[![Build Status](https://travis-ci.org/lucab/envsubst-rs.svg?branch=master)](https://travis-ci.org/lucab/envsubst-rs)
 [![crates.io](https://img.shields.io/crates/v/envsubst.svg)](https://crates.io/crates/envsubst)
 [![Documentation](https://docs.rs/envsubst/badge.svg)](https://docs.rs/envsubst)
 
