@@ -16,8 +16,8 @@ thiserror = "^1.0"
 
 [package.metadata.release]
 sign-commit = true
-disable-publish = true
-disable-push = true
+publish = false
+push = false
 pre-release-commit-message = "cargo: envsubst release {{version}}"
 post-release-commit-message = "cargo: development version bump"
 tag-message = "envsubst {{version}}"
