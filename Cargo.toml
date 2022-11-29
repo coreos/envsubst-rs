@@ -9,7 +9,6 @@ repository = "https://github.com/coreos/envsubst-rs"
 edition = "2018"
 exclude = [
 ".gitignore",
-".travis.yml",
 ]
 
 [dependencies]
