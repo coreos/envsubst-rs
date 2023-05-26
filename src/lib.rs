@@ -54,7 +54,7 @@ where
         validate(v, "value")?;
 
         let from = format!("${{{}}}", k);
-        output = output.replace(&from, &v)
+        output = output.replace(&from, v)
     }
 
     Ok(output)
