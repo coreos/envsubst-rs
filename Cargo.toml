@@ -8,7 +8,7 @@ authors = ["Luca Bruno <lucab@lucabruno.net>"]
 repository = "https://github.com/coreos/envsubst-rs"
 edition = "2021"
 rust-version = "1.56.0"
-exclude = [".gitignore"]
+exclude = [".gitignore", ".github"]
 
 [dependencies]
 thiserror = "^1.0"
