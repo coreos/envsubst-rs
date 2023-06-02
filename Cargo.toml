@@ -2,7 +2,7 @@
 name = "envsubst"
 version = "0.2.1"
 description = "Variables substitution"
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 keywords = ["envsubst", "varsubst"]
 authors = ["Luca Bruno <lucab@lucabruno.net>"]
 repository = "https://github.com/coreos/envsubst-rs"
