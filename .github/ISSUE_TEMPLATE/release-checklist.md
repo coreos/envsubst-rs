@@ -32,6 +32,9 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] `UPSTREAM_REMOTE=origin`
   - [ ] `git checkout -b pre-release-${RELEASE_VER}`
 
+- check `Cargo.toml` for unintended increases of lower version bounds:
+  - [ ] `git diff $(git describe --abbrev=0) Cargo.toml`
+
 - write release notes:
   - [ ] write release notes in `docs/release-notes.md`
   - [ ] `git add docs/release-notes.md && git commit -m "docs/release-notes: update for release ${RELEASE_VER}"`
@@ -85,13 +88,13 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] run `kinit your_fas_account@FEDORAPROJECT.ORG`
   - [ ] run `fedpkg new-sources $(spectool -S rust-envsubst.spec | sed 's:.*/::')`
   - [ ] PR the changes in [Fedora](https://src.fedoraproject.org/rpms/rust-envsubst)
-  - [ ] once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f38) then push those, for example:
+  - [ ] once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f39) then push those, for example:
     ```bash
     git checkout rawhide
     git pull --ff-only
-    git checkout f38
+    git checkout f39
     git merge --ff-only rawhide
-    git push origin f38
+    git push origin f39
     ```
   - [ ] on each of those branches run `fedpkg build`
   - [ ] once the builds have finished, submit them to [bodhi](https://bodhi.fedoraproject.org/updates/new), filling in:
