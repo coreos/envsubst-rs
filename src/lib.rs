@@ -8,6 +8,9 @@
 //! this only supports braces-delimited variables (i.e. `${foo}`) and
 //! takes replacement values from an explicit map of variables.
 //!
+//! Variable names can contain dots for namespacing (e.g. `${project.DATABASE_URL}`),
+//! allowing you to organize variables with prefixes or hierarchical naming schemes.
+//!
 //! [`envsubst`]: https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
 //!
 //! ## Example
@@ -25,6 +28,17 @@
 //! let final_url = envsubst::substitute(base_url, &context).unwrap();
 //! assert!(!envsubst::is_templated(&final_url));
 //! assert_eq!(final_url, "https://example.com/login");
+//! ```
+//!
+//! ## Namespaced Variables
+//!
+//! ```rust
+//! let template = "Database: ${project.DATABASE_URL}";
+//! let mut context = std::collections::HashMap::new();
+//! context.insert("project.DATABASE_URL".to_string(), "postgres://localhost:5432/mydb".to_string());
+//!
+//! let result = envsubst::substitute(template, &context).unwrap();
+//! assert_eq!(result, "Database: postgres://localhost:5432/mydb");
 //! ```
 
 #![allow(clippy::implicit_hasher)]
@@ -167,5 +181,41 @@ mod tests {
 
         let mut env = HashMap::new();
         env.insert("VAR".to_string(), "${VAR}".to_string());
+    }
+
+    #[test]
+    fn namespaced_vars() {
+        let template = "Database URL: ${project.DATABASE_URL}";
+        let mut env = HashMap::new();
+        env.insert("project.DATABASE_URL".to_string(), "postgres://localhost:5432/mydb".to_string());
+
+        let out = substitute(template, &env).unwrap();
+        let expected = "Database URL: postgres://localhost:5432/mydb";
+        assert_eq!(out, expected);
+    }
+
+    #[test]
+    fn multiple_namespaced_vars() {
+        let template = "${app.name} - ${app.version} - ${db.host}:${db.port}";
+        let mut env = HashMap::new();
+        env.insert("app.name".to_string(), "MyApp".to_string());
+        env.insert("app.version".to_string(), "1.0.0".to_string());
+        env.insert("db.host".to_string(), "localhost".to_string());
+        env.insert("db.port".to_string(), "5432".to_string());
+
+        let out = substitute(template, &env).unwrap();
+        let expected = "MyApp - 1.0.0 - localhost:5432";
+        assert_eq!(out, expected);
+    }
+
+    #[test]
+    fn deeply_namespaced_vars() {
+        let template = "${services.backend.api.url}";
+        let mut env = HashMap::new();
+        env.insert("services.backend.api.url".to_string(), "https://api.example.com".to_string());
+
+        let out = substitute(template, &env).unwrap();
+        let expected = "https://api.example.com";
+        assert_eq!(out, expected);
     }
 }
